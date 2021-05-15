@@ -24,7 +24,8 @@ namespace UnseonChartLib.USCL
         public USLineChart()
         {
             InitializeComponent();
-            SectionHeaderPosition = new Point(10, 10);
+            SectionHeaderPosition = new Point(15, 15);
+            ChartOuterLineBrush = new SolidColorBrush(Color.FromArgb(255, 50, 50, 50));
         }
 
         private void ui_canvas_Loaded(object sender, RoutedEventArgs e)
@@ -48,39 +49,42 @@ namespace UnseonChartLib.USCL
         private StackPanel ui_section_header = new StackPanel();
         private TextBlock ui_title = new TextBlock();
         private Line ui_line_bottom = new Line();
+        private Line ui_line_right = new Line();
+
         public void Assembly()
         {
             //add ui_section_header on canvas
-            AssemblySingle(ui_canvas, ui_section_header);
+            USCommon.AssemblySingle(ui_canvas, ui_section_header);
 
             //add ui_line_bottom on canvas
-            AssemblySingle(ui_canvas, ui_line_bottom);
+            USCommon.AssemblySingle(ui_canvas, ui_line_bottom);
+
+            //add ui_line_right on canvas
+            USCommon.AssemblySingle(ui_canvas, ui_line_right);
 
             //add ui_title on ui_section_header
-            AssemblySingle(ui_section_header, ui_title);
-
-        }
-
-        private void AssemblySingle(Panel parent, FrameworkElement children)
-        {
-            //add ui_title on ui_section_header
-            if (parent != null &&
-                children != null &&
-                !parent.Children.Contains(children))
-            {
-                parent.Children.Add(children);
-            }
+            USCommon.AssemblySingle(ui_section_header, ui_title);
         }
 
         public string ChartTitle { get; set; }
+        public Brush ChartOuterLineBrush { get; set; }
         public void ContentsUpdate()
         {
-            //Changing ChartTitles Text
-            if (ui_title!=null&&
-                !ui_title.Text.Equals(ChartTitle))
-            {
-                ui_title.Text = ChartTitle;
-            }
+            USCommon.UpdateText(ui_title, ChartTitle, 16, FontWeight.FromOpenTypeWeight(600));
+
+            USCommon.UpdateLine(ui_line_bottom, 
+                new Point(10,ui_canvas.ActualHeight-60), 
+                new Point(ui_canvas.ActualWidth-100,ui_canvas.ActualHeight-60),
+                1,
+                ChartOuterLineBrush);
+
+            USCommon.UpdateLine(ui_line_right,
+                new Point(ui_canvas.ActualWidth - 100, 60),
+                new Point(ui_canvas.ActualWidth - 100, ui_canvas.ActualHeight - 60),
+                1,
+                ChartOuterLineBrush);
+
+
         }
 
         public Point SectionHeaderPosition { get; set; }
@@ -90,5 +94,8 @@ namespace UnseonChartLib.USCL
             //Update ui_section_header Position
             ui_section_header.Margin = new Thickness(SectionHeaderPosition.X, SectionHeaderPosition.Y, 0, 0);        
         }
+
+       
+
     }
 }
