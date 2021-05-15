@@ -26,7 +26,7 @@ namespace UnseonChartLib.USCL
         public USLineChart()
         {
             InitializeComponent();
-            ChartOuterLineBrush = new SolidColorBrush(Color.FromArgb(255, 50, 50, 50));
+            ChartOuterLineBrush = new SolidColorBrush(Color.FromArgb(255, 0, 0, 0));
             dataTable = new DataTable();
         }
 
@@ -40,7 +40,6 @@ namespace UnseonChartLib.USCL
         {
             Monitor.Exit(_locker);
         }
-
 
         private void ui_canvas_Loaded(object sender, RoutedEventArgs e)
         {
@@ -73,6 +72,8 @@ namespace UnseonChartLib.USCL
         private List<Polyline> ui_polylines = new List<Polyline>();
         private List<TextBlock> ui_xLabels = new List<TextBlock>();
         private List<TextBlock> ui_yLabels = new List<TextBlock>();
+        private List<Double> m_valuesMax = new List<Double>();
+        private List<Double> m_valuesMin = new List<Double>();
 
         public void Assembly()
         {
@@ -103,8 +104,8 @@ namespace UnseonChartLib.USCL
                 double yLabelHeightPeriod = 80;
                 double xLabelCountPeriod = ui_section_body.ActualWidth / xLabelWidthPeriod;
                 double yLabelCountPeriod = ui_section_body.ActualHeight / yLabelHeightPeriod;
-
-                //chart data columns fetch
+                
+                //chart data columns fetch & column Label Added
                 for (int i = 1; i < dataTable.Columns.Count; i++)
                 {
                     if (dataTable.Columns[0].DataType.Equals(typeof(DateTime)))
@@ -120,6 +121,14 @@ namespace UnseonChartLib.USCL
 
                     }
                 }
+                
+                //chart data xLabel fetch
+                for (int i = 0; i < dataTable.Rows.Count; i++)
+                {
+                    
+                }
+
+                
 
             }
 
@@ -139,13 +148,13 @@ namespace UnseonChartLib.USCL
             USCommon.UpdateLine(ui_line_bottom, 
                 new Point(10,ui_canvas.ActualHeight-60), 
                 new Point(ui_canvas.ActualWidth-100,ui_canvas.ActualHeight-60),
-                1,
+                0.25,
                 ChartOuterLineBrush);
 
             USCommon.UpdateLine(ui_line_right,
                 new Point(ui_canvas.ActualWidth - 100, 60),
                 new Point(ui_canvas.ActualWidth - 100, ui_canvas.ActualHeight - 60),
-                1,
+                0.25,
                 ChartOuterLineBrush);
         }
 

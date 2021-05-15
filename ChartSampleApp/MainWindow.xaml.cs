@@ -27,16 +27,17 @@ namespace ChartSampleApp
         {
             InitializeComponent();
 
-            ui_usLineChart.EnterLock();
+            ui_usLineChart1.EnterLock();
             //Initialize Chart Datas
-            ui_usLineChart.ChartTitle = "Line Chart Sample";
+            ui_usLineChart1.ChartTitle = "Line Chart Sample";
             //Set Chart Column Information
-            ui_usLineChart.dataTable.Columns.Add("DateTime",typeof(DateTime));
-            ui_usLineChart.dataTable.Columns.Add("Level",typeof(Double));
-            ui_usLineChart.ExitLock();
+            ui_usLineChart1.dataTable.Columns.Add("DateTime",typeof(DateTime));
+            ui_usLineChart1.dataTable.Columns.Add("Level",typeof(Double));
+            ui_usLineChart1.ExitLock();
 
             if (thDataRowAdd == null)
                 thDataRowAdd = new Thread(new ThreadStart(AddChartDataAuto));
+            thDataRowAdd.Start();
 
         }
 
@@ -53,13 +54,13 @@ namespace ChartSampleApp
             while(true)
             {
                 startLevel += 1-(random.NextDouble()*2);
-                ui_usLineChart.EnterLock();
-                ui_usLineChart.dataTable.Rows.Add(DateTime.Now, startLevel);
-                if(ui_usLineChart.dataTable.Rows.Count>1000)
+                ui_usLineChart1.EnterLock();
+                ui_usLineChart1.dataTable.Rows.Add(DateTime.Now, startLevel);
+                if(ui_usLineChart1.dataTable.Rows.Count>1000)
                 {
-                    ui_usLineChart.dataTable.Rows.RemoveAt(0);
+                    ui_usLineChart1.dataTable.Rows.RemoveAt(0);
                 }
-                ui_usLineChart.ExitLock();
+                ui_usLineChart1.ExitLock();
                 Thread.Sleep(50);
             }
         }

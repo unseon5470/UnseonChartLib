@@ -9,6 +9,14 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800" Background="#cccccc" Closed="Window_Closed">
     <Grid>
-        <USCL:USLineChart x:Name="ui_usLineChart" Margin="10px" Background="#ffffff"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <USCL:USLineChart x:Name="ui_usLineChart1" Margin="10px 10px 10px 0px" Background="#ffffff" Grid.Row="0"/>
+        <USCL:USLineChart x:Name="ui_usLineChart2" Margin="10px" Background="#ffffff" Grid.Row="1"/>
     </Grid>
 </Window>
