@@ -1,5 +1,5 @@
 ﻿UnseonChartLib
-1.0.0.0
+
 
 library
 C#
@@ -12,9 +12,9 @@ TRACE;DEBUG;NET;NET5_0;NETCOREAPP
 
 1-771728719
 
-41557900233
+2-1884516735
 193-1891726104
 Themes\USLineChart.xaml;
 
-True
+False
 

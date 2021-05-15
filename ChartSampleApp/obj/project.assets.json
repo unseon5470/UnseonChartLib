@@ -1,11 +1,33 @@
 {
   "version": 3,
   "targets": {
-    "net5.0-windows7.0": {}
+    "net5.0-windows7.0": {
+      "UnseonChartLib/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v5.0",
+        "compile": {
+          "bin/placeholder/UnseonChartLib.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/UnseonChartLib.dll": {}
+        },
+        "frameworkReferences": [
+          "Microsoft.WindowsDesktop.App.WPF"
+        ]
+      }
+    }
   },
-  "libraries": {},
+  "libraries": {
+    "UnseonChartLib/1.0.0": {
+      "type": "project",
+      "path": "../UnseonChartLib/UnseonChartLib.csproj",
+      "msbuildProject": "../UnseonChartLib/UnseonChartLib.csproj"
+    }
+  },
   "projectFileDependencyGroups": {
-    "net5.0-windows7.0": []
+    "net5.0-windows7.0": [
+      "UnseonChartLib >= 1.0.0"
+    ]
   },
   "packageFolders": {
     "C:\\Users\\jws54\\.nuget\\packages\\": {},
@@ -38,7 +60,11 @@
       "frameworks": {
         "net5.0-windows7.0": {
           "targetAlias": "net5.0-windows",
-          "projectReferences": {}
+          "projectReferences": {
+            "D:\\Git\\Public\\UnseonChartLib\\ChartSampleApp\\UnseonChartLib\\UnseonChartLib.csproj": {
+              "projectPath": "D:\\Git\\Public\\UnseonChartLib\\ChartSampleApp\\UnseonChartLib\\UnseonChartLib.csproj"
+            }
+          }
         }
       },
       "warningProperties": {

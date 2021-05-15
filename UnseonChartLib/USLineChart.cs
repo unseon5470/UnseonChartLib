@@ -44,11 +44,11 @@ namespace UnseonChartLib
     ///     <MyNamespace:CustomControl1/>
     ///
     /// </summary>
-    public class CustomControl1 : Control
+    public class USLineChart : Control
     {
-        static CustomControl1()
+        static USLineChart()
         {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(CustomControl1), new FrameworkPropertyMetadata(typeof(CustomControl1)));
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(USLineChart), new FrameworkPropertyMetadata(typeof(USLineChart)));
         }
     }
 }
