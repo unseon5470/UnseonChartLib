@@ -2,7 +2,6 @@ D:\Git\Public\UnseonChartLib\ChartSampleApp\UnseonChartLib\bin\Debug\net5.0-wind
 D:\Git\Public\UnseonChartLib\ChartSampleApp\UnseonChartLib\bin\Debug\net5.0-windows\UnseonChartLib.dll
 D:\Git\Public\UnseonChartLib\ChartSampleApp\UnseonChartLib\bin\Debug\net5.0-windows\ref\UnseonChartLib.dll
 D:\Git\Public\UnseonChartLib\ChartSampleApp\UnseonChartLib\bin\Debug\net5.0-windows\UnseonChartLib.pdb
-D:\Git\Public\UnseonChartLib\ChartSampleApp\UnseonChartLib\obj\Debug\net5.0-windows\GeneratedInternalTypeHelper.g.cs
 D:\Git\Public\UnseonChartLib\ChartSampleApp\UnseonChartLib\obj\Debug\net5.0-windows\UnseonChartLib_MarkupCompile.cache
 D:\Git\Public\UnseonChartLib\ChartSampleApp\UnseonChartLib\obj\Debug\net5.0-windows\UnseonChartLib_MarkupCompile.lref
 D:\Git\Public\UnseonChartLib\ChartSampleApp\UnseonChartLib\obj\Debug\net5.0-windows\UnseonChartLib.g.resources
@@ -13,4 +12,5 @@ D:\Git\Public\UnseonChartLib\ChartSampleApp\UnseonChartLib\obj\Debug\net5.0-wind
 D:\Git\Public\UnseonChartLib\ChartSampleApp\UnseonChartLib\obj\Debug\net5.0-windows\UnseonChartLib.dll
 D:\Git\Public\UnseonChartLib\ChartSampleApp\UnseonChartLib\obj\Debug\net5.0-windows\ref\UnseonChartLib.dll
 D:\Git\Public\UnseonChartLib\ChartSampleApp\UnseonChartLib\obj\Debug\net5.0-windows\UnseonChartLib.pdb
-D:\Git\Public\UnseonChartLib\ChartSampleApp\UnseonChartLib\obj\Debug\net5.0-windows\Themes\USLineChart.baml
+D:\Git\Public\UnseonChartLib\ChartSampleApp\UnseonChartLib\obj\Debug\net5.0-windows\USCL\USLineChart.g.cs
+D:\Git\Public\UnseonChartLib\ChartSampleApp\UnseonChartLib\obj\Debug\net5.0-windows\USCL\USLineChart.baml
