@@ -10,7 +10,7 @@
         Title="MainWindow" Height="450" Width="800">
     <Grid>
 
-        <USCL:USLineChart/>
+        <USCL:USLineChart x:Name="ui_usLineChart"/>
 
     </Grid>
 </Window>

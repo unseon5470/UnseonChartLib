@@ -23,6 +23,7 @@ namespace ChartSampleApp
         public MainWindow()
         {
             InitializeComponent();
+            ui_usLineChart.ChartTitle = "Line Chart Sample";
         }
     }
 }

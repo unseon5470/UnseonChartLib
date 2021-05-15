@@ -13,7 +13,8 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Button Width="100" Height="100" Content="adasd" Grid.Row="0" Grid.Column="0"/>
-
+        <Canvas x:Name="ui_canvas" Loaded="ui_canvas_Loaded">
+            
+        </Canvas>
     </Grid>
 </UserControl>
