@@ -14,3 +14,4 @@ D:\Git\Public\UnseonChartLib\ChartSampleApp\UnseonChartLib\obj\x64\Debug\net5.0-
 D:\Git\Public\UnseonChartLib\ChartSampleApp\UnseonChartLib\obj\x64\Debug\net5.0-windows\UnseonChartLib.dll
 D:\Git\Public\UnseonChartLib\ChartSampleApp\UnseonChartLib\obj\x64\Debug\net5.0-windows\ref\UnseonChartLib.dll
 D:\Git\Public\UnseonChartLib\ChartSampleApp\UnseonChartLib\obj\x64\Debug\net5.0-windows\UnseonChartLib.pdb
+D:\Git\Public\UnseonChartLib\ChartSampleApp\UnseonChartLib\obj\x64\Debug\net5.0-windows\UnseonChartLib.csprojAssemblyReference.cache

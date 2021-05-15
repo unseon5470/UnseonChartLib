@@ -24,7 +24,6 @@ namespace UnseonChartLib.USCL
         public USLineChart()
         {
             InitializeComponent();
-            SectionHeaderPosition = new Point(15, 15);
             ChartOuterLineBrush = new SolidColorBrush(Color.FromArgb(255, 50, 50, 50));
         }
 
@@ -47,9 +46,11 @@ namespace UnseonChartLib.USCL
 
        
         private StackPanel ui_section_header = new StackPanel();
+        private Canvas ui_section_body = new Canvas();
         private TextBlock ui_title = new TextBlock();
         private Line ui_line_bottom = new Line();
         private Line ui_line_right = new Line();
+        private List<Polyline> ui_polylines = new List<Polyline>();
 
         public void Assembly()
         {
@@ -62,8 +63,15 @@ namespace UnseonChartLib.USCL
             //add ui_line_right on canvas
             USCommon.AssemblySingle(ui_canvas, ui_line_right);
 
+            //add ui_section_chartbody
+            USCommon.AssemblySingle(ui_canvas, ui_section_body);
+            
+            
+            
             //add ui_title on ui_section_header
             USCommon.AssemblySingle(ui_section_header, ui_title);
+
+           
         }
 
         public string ChartTitle { get; set; }
@@ -85,15 +93,24 @@ namespace UnseonChartLib.USCL
                 ChartOuterLineBrush);
         }
 
-        public Point SectionHeaderPosition { get; set; }
-
+        private static Thickness sectionHeaderPosition = new Thickness(15, 15, 0, 0);
+        private static Thickness sectionBodyPosition = new Thickness();
         public void PositionUpdate()
         {
             //Update ui_section_header Position
-            ui_section_header.Margin = new Thickness(SectionHeaderPosition.X, SectionHeaderPosition.Y, 0, 0);        
+            if(ui_section_header.Margin!= sectionHeaderPosition)
+                ui_section_header.Margin = sectionHeaderPosition;
+
+            sectionBodyPosition.Left = 10;
+            sectionBodyPosition.Top = 60;
+            sectionBodyPosition.Right = ui_canvas.ActualWidth - 100;
+            sectionBodyPosition.Bottom = ui_canvas.ActualHeight - 60;
+
+            if (ui_section_body.Margin != sectionBodyPosition)
+                ui_section_body.Margin = sectionBodyPosition;
         }
 
-       
+
 
     }
 }
