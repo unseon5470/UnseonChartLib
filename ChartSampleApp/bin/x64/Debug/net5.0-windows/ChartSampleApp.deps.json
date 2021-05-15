@@ -1,0 +1,36 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v5.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v5.0": {
+      "ChartSampleApp/1.0.0": {
+        "dependencies": {
+          "UnseonChartLib": "1.0.0"
+        },
+        "runtime": {
+          "ChartSampleApp.dll": {}
+        }
+      },
+      "UnseonChartLib/1.0.0": {
+        "runtime": {
+          "UnseonChartLib.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "ChartSampleApp/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "UnseonChartLib/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

@@ -9,8 +9,6 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800" Background="#cccccc">
     <Grid>
-
         <USCL:USLineChart x:Name="ui_usLineChart" Margin="10px" Background="#ffffff"/>
-
     </Grid>
 </Window>

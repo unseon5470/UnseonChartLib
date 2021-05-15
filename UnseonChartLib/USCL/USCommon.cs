@@ -19,21 +19,15 @@ namespace UnseonChartLib.USCL
 
             //Changing Text
             if (!textblock.Text.Equals(text))
-            {
                 textblock.Text = text;
-            }
 
             //Changing FontSize
-            if(textblock.FontSize!=fontSize)
-            {
+            if (textblock.FontSize != fontSize)
                 textblock.FontSize = fontSize;
-            }
 
             //Changing FontWeight
             if (textblock.FontWeight != fontWeight)
-            {
                 textblock.FontWeight = fontWeight;
-            }
         }
 
         public static void UpdateLine(Line line, Point startPoint, Point endPoint, double thickness, Brush brush)
@@ -41,26 +35,35 @@ namespace UnseonChartLib.USCL
             if (line == null)
                 return;
 
-            line.X1 = startPoint.X;
-            line.Y1 = startPoint.Y;
+            //line set startPoint
+            if (line.X1 != startPoint.X)
+                line.X1 = startPoint.X;
+            if (line.Y1 != startPoint.Y)
+                line.Y1 = startPoint.Y;
 
-            line.Y2 = endPoint.Y;
-            line.X2 = endPoint.X;
+            //line set endPoint
+            if (line.X2 != endPoint.X)
+                line.X2 = endPoint.X;
+            if (line.Y2 != endPoint.Y)
+                line.Y2 = endPoint.Y;
 
-            line.StrokeThickness = thickness;
-            line.Stroke = brush;
+            //line set thickness
+            if (line.StrokeThickness != thickness)
+                line.StrokeThickness = thickness;
 
+            //line set stroke brush
+            if (line.Stroke != brush)
+                line.Stroke = brush;
         }
 
         public static void AssemblySingle(Panel parent, FrameworkElement children)
         {
-            //add ui_title on ui_section_header
-            if (parent != null &&
-                children != null &&
-                !parent.Children.Contains(children))
-            {
+            if (parent == null || children == null)
+                return;
+
+            //aseembly frameworkElements
+            if (!parent.Children.Contains(children))
                 parent.Children.Add(children);
-            }
         }
     }
 }

@@ -83,8 +83,6 @@ namespace UnseonChartLib.USCL
                 new Point(ui_canvas.ActualWidth - 100, ui_canvas.ActualHeight - 60),
                 1,
                 ChartOuterLineBrush);
-
-
         }
 
         public Point SectionHeaderPosition { get; set; }
