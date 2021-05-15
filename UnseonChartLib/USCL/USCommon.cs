@@ -18,8 +18,8 @@ namespace UnseonChartLib.USCL
                 return;
 
             //Changing Text
-            if (!textblock.Text.Equals(text))
-                textblock.Text = text;
+            //It's good!
+            textblock.Text = text;
 
             //Changing FontSize
             if (textblock.FontSize != fontSize)
