@@ -7,7 +7,7 @@
         xmlns:USCL="clr-namespace:UnseonChartLib.USCL;assembly=UnseonChartLib"
         x:Class="ChartSampleApp.MainWindow"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800" Background="#cccccc">
+        Title="MainWindow" Height="450" Width="800" Background="#cccccc" Closed="Window_Closed">
     <Grid>
         <USCL:USLineChart x:Name="ui_usLineChart" Margin="10px" Background="#ffffff"/>
     </Grid>
