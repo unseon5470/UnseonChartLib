@@ -1,19 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Markup;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace UnseonChartLib.USCL
@@ -26,7 +17,7 @@ namespace UnseonChartLib.USCL
         public USLineChart()
         {
             InitializeComponent();
-            ChartOuterLineBrush = new SolidColorBrush(Color.FromArgb(255, 0, 0, 0));
+            ChartOuterLineBrush = new SolidColorBrush(Color.FromArgb(255, 80, 80, 80));
             dataTable = new DataTable();
         }
 
@@ -49,7 +40,7 @@ namespace UnseonChartLib.USCL
         private void UpdateUI(object sender, EventArgs e)
         {
             EnterLock();
-            
+
             //Assemble Objects base on Canvas
             Assembly();
 
@@ -58,82 +49,86 @@ namespace UnseonChartLib.USCL
 
             //Update Objects Positions
             PositionUpdate();
-           
+
             ExitLock();
         }
 
-        
+
 
         private StackPanel ui_section_header = new StackPanel();
         private Canvas ui_section_body = new Canvas();
+        private StackPanel ui_section_simbols = new StackPanel();
         private TextBlock ui_title = new TextBlock();
         private Line ui_line_bottom = new Line();
         private Line ui_line_right = new Line();
-        private List<Polyline> ui_polylines = new List<Polyline>();
-        private List<TextBlock> ui_xLabels = new List<TextBlock>();
-        private List<TextBlock> ui_yLabels = new List<TextBlock>();
-        private List<Double> m_valuesMax = new List<Double>();
-        private List<Double> m_valuesMin = new List<Double>();
+
+        private Dictionary<String, Polyline> ui_polylines = new Dictionary<String, Polyline>();
+        private Dictionary<String, TextBlock> ui_xLabels = new Dictionary<String, TextBlock>();
+        private Dictionary<String, TextBlock> ui_yLabels = new Dictionary<String, TextBlock>();
+        private Dictionary<String, TextBlock> ui_simbols = new Dictionary<String, TextBlock>();
+        private Dictionary<String, Double> m_valuesMax = new Dictionary<String, Double>();
+        private Dictionary<String, Double> m_valuesMin = new Dictionary<String, Double>();
+        
+        private List<string> tempCheckUseColumnList = new List<string>();
+        private List<string> tempRemoveColumnList = new List<string>();
 
         public void Assembly()
         {
-            //add ui_section_header on canvas
             USCommon.AssemblySingle(ui_canvas, ui_section_header);
-
-            //add ui_line_bottom on canvas
+            USCommon.AssemblySingle(ui_canvas, ui_section_body);
+            USCommon.AssemblySingle(ui_canvas, ui_section_simbols);
             USCommon.AssemblySingle(ui_canvas, ui_line_bottom);
-
-            //add ui_line_right on canvas
             USCommon.AssemblySingle(ui_canvas, ui_line_right);
 
-            //add ui_section_chartbody
-            USCommon.AssemblySingle(ui_canvas, ui_section_body);
-            
-            //add ui_title on ui_section_header
             USCommon.AssemblySingle(ui_section_header, ui_title);
 
             //add chart graph
-            if(dataTable!=null && dataTable.Columns.Count>=2 && dataTable.Rows.Count > 0)
+            if (dataTable != null && dataTable.Columns.Count >= 2 && dataTable.Rows.Count > 0)
             {
                 //chart zoom setup
                 int startRowNum = 0;
                 int endRowNum = dataTable.Rows.Count - 1;
+                int viewRowCount = endRowNum - startRowNum;
 
                 //calculate chart label position period
                 double xLabelWidthPeriod = 80;
                 double yLabelHeightPeriod = 80;
-                double xLabelCountPeriod = ui_section_body.ActualWidth / xLabelWidthPeriod;
-                double yLabelCountPeriod = ui_section_body.ActualHeight / yLabelHeightPeriod;
-                
-                //chart data columns fetch & column Label Added
-                for (int i = 1; i < dataTable.Columns.Count; i++)
+                double xLabelCountPeriod = viewRowCount * (xLabelWidthPeriod / ui_section_body.ActualWidth);
+                double yLabelCountPeriod = viewRowCount * (yLabelHeightPeriod / ui_section_body.ActualHeight);
+
+                tempCheckUseColumnList.Clear();
+
+                //generate data-draw frameworks elements
+                for (int nCol = 1; nCol < dataTable.Columns.Count; nCol++)
                 {
-                    if (dataTable.Columns[0].DataType.Equals(typeof(DateTime)))
-                    {
-
-                    }
-                    else if (dataTable.Columns[0].DataType.Equals(typeof(int)))
-                    {
-
-                    }
-                    else if (dataTable.Columns[0].DataType.Equals(typeof(String)))
-                    {
-
-                    }
-                }
-                
-                //chart data xLabel fetch
-                for (int i = 0; i < dataTable.Rows.Count; i++)
-                {
+                    string tempColumnName = dataTable.Columns[nCol].ColumnName;
+                    tempCheckUseColumnList.Add(tempColumnName);
                     
+                    //gen ui_simbol instance.
+                    if (!ui_simbols.ContainsKey(tempColumnName))
+                        ui_simbols.Add(tempColumnName, new TextBlock());
+
+                   
+                    for (int nRow = 0; nRow < dataTable.Rows.Count; nRow++)
+                    {
+                        
+                    }
                 }
 
-                
-
+                //remove unused objects in ui_simbols
+                tempRemoveColumnList.Clear();
+                foreach (string key in ui_simbols.Keys)
+                {
+                    if(!tempCheckUseColumnList.Contains(key))
+                    {
+                        tempRemoveColumnList.Add(key);
+                    }
+                }
+                foreach (string key in tempRemoveColumnList)
+                {
+                    ui_simbols.Remove(key);
+                }
             }
-
-            
-
         }
 
         //Please Use Format : EnterLock(); access _dataTable ExitLock(); 
@@ -145,32 +140,44 @@ namespace UnseonChartLib.USCL
         {
             USCommon.UpdateText(ui_title, ChartTitle, 16, FontWeight.FromOpenTypeWeight(600));
 
-            USCommon.UpdateLine(ui_line_bottom, 
-                new Point(10,ui_canvas.ActualHeight-60), 
-                new Point(ui_canvas.ActualWidth-100,ui_canvas.ActualHeight-60),
-                0.25,
-                ChartOuterLineBrush);
+
+            USCommon.UpdateLine(ui_line_bottom,
+                new Point(10, ui_canvas.ActualHeight - 45),
+                new Point(ui_canvas.ActualWidth - 79, ui_canvas.ActualHeight - 45),
+                1,
+                ChartOuterLineBrush,
+                true);
 
             USCommon.UpdateLine(ui_line_right,
-                new Point(ui_canvas.ActualWidth - 100, 60),
-                new Point(ui_canvas.ActualWidth - 100, ui_canvas.ActualHeight - 60),
-                0.25,
-                ChartOuterLineBrush);
+                new Point(ui_canvas.ActualWidth - 80, 45),
+                new Point(ui_canvas.ActualWidth - 80, ui_canvas.ActualHeight - 45),
+                1,
+                ChartOuterLineBrush,
+                true);
+
+
+
+
         }
 
         private static Thickness sectionHeaderPosition = new Thickness(15, 15, 0, 0);
+        private static Thickness sectionSimbolsPosition = new Thickness(20, 65, 0, 0);
         private static Thickness sectionBodyPosition = new Thickness();
         public void PositionUpdate()
         {
             //Update ui_section_header Position
-            if(ui_section_header.Margin!= sectionHeaderPosition)
+            if (ui_section_header.Margin != sectionHeaderPosition)
                 ui_section_header.Margin = sectionHeaderPosition;
 
+            //Update ui_section_simbols Position
+            if (ui_section_simbols.Margin != sectionSimbolsPosition)
+                ui_section_simbols.Margin = sectionSimbolsPosition;
+
+            //Update ui_section_body Position
             sectionBodyPosition.Left = 10;
-            sectionBodyPosition.Top = 60;
+            sectionBodyPosition.Top = 45;
             sectionBodyPosition.Right = ui_canvas.ActualWidth - 100;
             sectionBodyPosition.Bottom = ui_canvas.ActualHeight - 60;
-
             if (ui_section_body.Margin != sectionBodyPosition)
                 ui_section_body.Margin = sectionBodyPosition;
         }

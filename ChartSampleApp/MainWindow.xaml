@@ -14,9 +14,7 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <USCL:USLineChart x:Name="ui_usLineChart1" Margin="10px 10px 10px 0px" Background="#ffffff" Grid.Row="0"/>
-        <USCL:USLineChart x:Name="ui_usLineChart2" Margin="10px" Background="#ffffff" Grid.Row="1"/>
+        <USCL:USLineChart x:Name="ui_usLineChart1" Margin="20" BorderBrush="#888888" BorderThickness="1" Background="#ffffff"/>
     </Grid>
 </Window>

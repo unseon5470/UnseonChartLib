@@ -1,18 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace ChartSampleApp
 {
@@ -22,19 +10,21 @@ namespace ChartSampleApp
     public partial class MainWindow : Window
     {
         private Thread thDataRowAdd = null;
-        
+
         public MainWindow()
         {
             InitializeComponent();
 
+            //Initializing USLineChart's Instance of UnseonChartLibs 
             ui_usLineChart1.EnterLock();
-            //Initialize Chart Datas
-            ui_usLineChart1.ChartTitle = "Line Chart Sample";
-            //Set Chart Column Information
-            ui_usLineChart1.dataTable.Columns.Add("DateTime",typeof(DateTime));
-            ui_usLineChart1.dataTable.Columns.Add("Level",typeof(Double));
+            ui_usLineChart1.ChartTitle = "Simple Unseon Line Chart Sample";
+            ui_usLineChart1.dataTable.Columns.Add("DateTime", typeof(DateTime));
+            ui_usLineChart1.dataTable.Columns.Add("Sensor1", typeof(Double));
+            ui_usLineChart1.dataTable.Columns.Add("Sensor2", typeof(Double));
+            ui_usLineChart1.dataTable.Columns.Add("Sensor3", typeof(Double));
             ui_usLineChart1.ExitLock();
 
+            //Start Live Chart Data Auto Generator Thread
             if (thDataRowAdd == null)
                 thDataRowAdd = new Thread(new ThreadStart(AddChartDataAuto));
             thDataRowAdd.Start();
@@ -43,24 +33,31 @@ namespace ChartSampleApp
 
         private void Window_Closed(object sender, EventArgs e)
         {
-            //Close Process All.
-            Application.Current.Shutdown();
+            //when closing main window, it kill the current process.
+            System.Environment.Exit(0);
         }
 
-        private double startLevel = 100;
+        private double sensorLatestValue1 = 100;
+        private double sensorLatestValue2 = 100;
+        private double sensorLatestValue3 = 100;
         private void AddChartDataAuto()
         {
+            //Chart Value Random Generation.
             Random random = new Random();
-            while(true)
+            while (true)
             {
-                startLevel += 1-(random.NextDouble()*2);
+                sensorLatestValue1 += 1 - (random.NextDouble() * 2);
+                sensorLatestValue2 += 1 - (random.NextDouble() * 2);
+                sensorLatestValue3 += 1 - (random.NextDouble() * 2);
+
                 ui_usLineChart1.EnterLock();
-                ui_usLineChart1.dataTable.Rows.Add(DateTime.Now, startLevel);
-                if(ui_usLineChart1.dataTable.Rows.Count>1000)
+                ui_usLineChart1.dataTable.Rows.Add(DateTime.Now, sensorLatestValue1, sensorLatestValue2, sensorLatestValue3);
+                if (ui_usLineChart1.dataTable.Rows.Count > 1000)
                 {
                     ui_usLineChart1.dataTable.Rows.RemoveAt(0);
                 }
                 ui_usLineChart1.ExitLock();
+
                 Thread.Sleep(50);
             }
         }

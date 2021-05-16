@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
@@ -30,7 +25,7 @@ namespace UnseonChartLib.USCL
                 textblock.FontWeight = fontWeight;
         }
 
-        public static void UpdateLine(Line line, Point startPoint, Point endPoint, double thickness, Brush brush)
+        public static void UpdateLine(Line line, Point startPoint, Point endPoint, double thickness, Brush brush, bool PixelMode)
         {
             if (line == null)
                 return;
@@ -47,9 +42,19 @@ namespace UnseonChartLib.USCL
             if (line.Y2 != endPoint.Y)
                 line.Y2 = endPoint.Y;
 
+            if (line.SnapsToDevicePixels != PixelMode)
+            {
+                line.SnapsToDevicePixels = PixelMode;
+                line.SetValue(RenderOptions.EdgeModeProperty, EdgeMode.Aliased);
+            }
+
+
             //line set thickness
             if (line.StrokeThickness != thickness)
+            {
                 line.StrokeThickness = thickness;
+            }
+
 
             //line set stroke brush
             if (line.Stroke != brush)
