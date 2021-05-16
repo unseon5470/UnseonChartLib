@@ -144,8 +144,10 @@ namespace UnseonChartLib.USCL
         public Brush ChartOuterLineBrush { get; set; }
         public void ContentsUpdate()
         {
+            //update title
             USCommon.UpdateText(ui_title, ChartTitle, 16, FontWeight.FromOpenTypeWeight(600));
 
+            //update graph border lines
             USCommon.UpdateLine(ui_line_bottom,
                 new Point(10, ui_canvas.ActualHeight - 45),
                 new Point(ui_canvas.ActualWidth - 79, ui_canvas.ActualHeight - 45),
@@ -160,9 +162,10 @@ namespace UnseonChartLib.USCL
                 ChartOuterLineBrush,
                 true);
 
+            //update ui_simbol contents
             foreach(string key in ui_simbols.Keys)
             {
-                USCommon.UpdateText(ui_simbols[key],key,16,FontWeight.FromOpenTypeWeight(300));
+                USCommon.UpdateText(ui_simbols[key],key,14,FontWeight.FromOpenTypeWeight(300));
             }
 
 
