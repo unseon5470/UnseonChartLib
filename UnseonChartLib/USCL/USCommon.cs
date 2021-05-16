@@ -70,5 +70,16 @@ namespace UnseonChartLib.USCL
             if (!parent.Children.Contains(children))
                 parent.Children.Add(children);
         }
+
+        public static void DeAssemblySingle(Panel parent, FrameworkElement children)
+        {
+            if (parent == null || children == null)
+                return;
+
+            if(parent.Children.Contains(children))
+            {
+                parent.Children.Remove(children);                
+            }
+        }
     }
 }

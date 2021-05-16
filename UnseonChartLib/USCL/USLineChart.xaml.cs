@@ -108,7 +108,7 @@ namespace UnseonChartLib.USCL
                     if (!ui_simbols.ContainsKey(tempColumnName))
                         ui_simbols.Add(tempColumnName, new TextBlock());
 
-                   
+                    USCommon.AssemblySingle(ui_section_simbols, ui_simbols[tempColumnName]);
                     for (int nRow = 0; nRow < dataTable.Rows.Count; nRow++)
                     {
                         
@@ -126,6 +126,8 @@ namespace UnseonChartLib.USCL
                 }
                 foreach (string key in tempRemoveColumnList)
                 {
+                    USCommon.DeAssemblySingle(ui_section_simbols, ui_simbols[key]);
+                    ui_simbols[key] = null;
                     ui_simbols.Remove(key);
                 }
             }
@@ -140,7 +142,6 @@ namespace UnseonChartLib.USCL
         {
             USCommon.UpdateText(ui_title, ChartTitle, 16, FontWeight.FromOpenTypeWeight(600));
 
-
             USCommon.UpdateLine(ui_line_bottom,
                 new Point(10, ui_canvas.ActualHeight - 45),
                 new Point(ui_canvas.ActualWidth - 79, ui_canvas.ActualHeight - 45),
@@ -154,6 +155,11 @@ namespace UnseonChartLib.USCL
                 1,
                 ChartOuterLineBrush,
                 true);
+
+            foreach(string key in ui_simbols.Keys)
+            {
+                USCommon.UpdateText(ui_simbols[key],key,16,FontWeight.FromOpenTypeWeight(300));
+            }
 
 
 
