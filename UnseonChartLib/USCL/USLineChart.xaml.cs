@@ -39,7 +39,7 @@ namespace UnseonChartLib.USCL
 
         private void ui_canvas_Loaded(object sender, RoutedEventArgs e)
         {
-            CompositionTarget.Rendering += Update;
+            CompositionTarget.Rendering += Update; 
         }
 
         private void Update(object sender, EventArgs e)
