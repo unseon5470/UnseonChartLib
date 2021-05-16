@@ -22,6 +22,11 @@ namespace UnseonChartLib.USCL
         }
 
         private Object _locker = new Object();
+
+        public bool TryEnterLock()
+        {
+            return Monitor.TryEnter(_locker);
+        }
         public void EnterLock()
         {
             Monitor.Enter(_locker);
@@ -34,23 +39,22 @@ namespace UnseonChartLib.USCL
 
         private void ui_canvas_Loaded(object sender, RoutedEventArgs e)
         {
-            CompositionTarget.Rendering += UpdateUI;
+            CompositionTarget.Rendering += Update;
         }
 
-        private void UpdateUI(object sender, EventArgs e)
+        private void Update(object sender, EventArgs e)
         {
-            EnterLock();
+            if(TryEnterLock())
+            {
+                //Assemble Objects base on Canvas
+                Assembly();
+                //Update Objects Contents
+                ContentsUpdate();
+                //Update Objects Positions
+                PositionUpdate();
 
-            //Assemble Objects base on Canvas
-            Assembly();
-
-            //Update Objects Contents
-            ContentsUpdate();
-
-            //Update Objects Positions
-            PositionUpdate();
-
-            ExitLock();
+                ExitLock();
+            }           
         }
 
 
