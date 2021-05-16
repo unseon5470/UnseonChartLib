@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace UnseonChartLib.USCL
 {
@@ -14,7 +10,6 @@ namespace UnseonChartLib.USCL
 
         public static Color GetColor(int i)
         {
-
             if (colorCodes.Length > i)
                 return Color.FromName(colorCodes[i]);
             else
