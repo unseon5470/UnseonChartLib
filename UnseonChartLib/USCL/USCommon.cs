@@ -7,7 +7,7 @@ namespace UnseonChartLib.USCL
 {
     public class USCommon
     {
-        public static void UpdateText(TextBlock textblock, string text, double fontSize, FontWeight fontWeight)
+        public static void UpdateText(TextBlock textblock, string text, double fontSize, FontWeight fontWeight, Brush foreground)
         {
             if (text == null || textblock == null)
                 return;
@@ -23,6 +23,10 @@ namespace UnseonChartLib.USCL
             //Changing FontWeight
             if (textblock.FontWeight != fontWeight)
                 textblock.FontWeight = fontWeight;
+
+            //Changing FontWeight
+            if (textblock.Foreground != foreground)
+                textblock.Foreground = foreground;
         }
 
         public static void UpdateLine(Line line, Point startPoint, Point endPoint, double thickness, Brush brush, bool PixelMode)

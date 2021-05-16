@@ -17,7 +17,6 @@ namespace UnseonChartLib.USCL
         public USLineChart()
         {
             InitializeComponent();
-            ChartOuterLineBrush = new SolidColorBrush(Color.FromArgb(255, 80, 80, 80));
             dataTable = new DataTable();
         }
 
@@ -139,42 +138,39 @@ namespace UnseonChartLib.USCL
 
         //Please Use Format : EnterLock(); access _dataTable ExitLock(); 
         public DataTable dataTable { get; set; }
-
         public string ChartTitle { get; set; }
-        public Brush ChartOuterLineBrush { get; set; }
         public void ContentsUpdate()
         {
             //update title
-            USCommon.UpdateText(ui_title, ChartTitle, 16, FontWeight.FromOpenTypeWeight(600));
+            USCommon.UpdateText(ui_title, ChartTitle, 16, FontWeight.FromOpenTypeWeight(600), USBrushs.GetSolidBrush(Colors.Black));
 
             //update graph border lines
             USCommon.UpdateLine(ui_line_bottom,
                 new Point(10, ui_canvas.ActualHeight - 45),
                 new Point(ui_canvas.ActualWidth - 79, ui_canvas.ActualHeight - 45),
                 1,
-                ChartOuterLineBrush,
+                USBrushs.GetSolidBrush(Colors.Black),
                 true);
 
             USCommon.UpdateLine(ui_line_right,
                 new Point(ui_canvas.ActualWidth - 80, 45),
                 new Point(ui_canvas.ActualWidth - 80, ui_canvas.ActualHeight - 45),
                 1,
-                ChartOuterLineBrush,
+                USBrushs.GetSolidBrush(Colors.Black),
                 true);
 
             //update ui_simbol contents
+            int num = 0;
             foreach(string key in ui_simbols.Keys)
             {
-                USCommon.UpdateText(ui_simbols[key],key,14,FontWeight.FromOpenTypeWeight(300));
+               
+                USCommon.UpdateText(ui_simbols[key],key,14,FontWeight.FromOpenTypeWeight(300), USBrushs.GetPastelSolidBrush(num));
+                num++;
             }
-
-
-
-
         }
 
         private static Thickness sectionHeaderPosition = new Thickness(15, 15, 0, 0);
-        private static Thickness sectionSimbolsPosition = new Thickness(20, 65, 0, 0);
+        private static Thickness sectionSimbolsPosition = new Thickness(20, 45, 0, 0);
         private static Thickness sectionBodyPosition = new Thickness();
         public void PositionUpdate()
         {
