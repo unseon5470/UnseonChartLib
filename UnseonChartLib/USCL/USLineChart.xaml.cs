@@ -195,7 +195,7 @@ namespace UnseonChartLib.USCL
             int num = 0;
             foreach(string key in ui_simbols.Keys)
             {
-               
+                 
                 USCommon.UpdateText(ui_simbols[key],key,14,FontWeight.FromOpenTypeWeight(300), USBrushs.GetPastelSolidBrush(num));
                 num++;
             }
