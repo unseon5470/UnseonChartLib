@@ -230,7 +230,7 @@ namespace UnseonChartLib.USCL
             //Update ui_section_xLabels Positioin
             sectionXLabelsPosition.Left = 10;
             sectionXLabelsPosition.Top = ui_canvas.ActualHeight - 60;
-            if (ui_section_xLabels.Margin != sectionXLabelsPosition)
+            if (ui_section_xLabels.Margin != sectionXLabelsPosition) 
             {
                 ui_section_xLabels.Margin = sectionXLabelsPosition;
                 ui_section_xLabels.Width = ui_canvas.ActualWidth - 100 - sectionXLabelsPosition.Left;
