@@ -22,7 +22,7 @@ namespace ChartSampleApp
             ui_usLineChart1.dataTable.Columns.Add("Sensor1", typeof(Double));
             ui_usLineChart1.dataTable.Columns.Add("Sensor2", typeof(Double));
             ui_usLineChart1.dataTable.Columns.Add("Sensor3", typeof(Double));
-            ui_usLineChart1.ExitLock();
+            ui_usLineChart1.ExitLock(); 
 
             //Start Live Chart Data Auto Generator Thread
             if (thDataRowAdd == null)
