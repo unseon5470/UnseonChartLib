@@ -47,6 +47,79 @@ namespace UnseonChartLib.USCL
             {
                 //Assemble Objects base on Canvas
                 Assembly();
+
+                //TODO: It's Graphs Data Drawing (Unique)
+                //add chart graph
+                if (dataTable != null && dataTable.Columns.Count >= 2 && dataTable.Rows.Count > 0)
+                {
+                    //chart zoom setup
+                    int startRowNum = 0;
+                    int endRowNum = dataTable.Rows.Count - 1;
+                    int viewRowCount = endRowNum - startRowNum;
+
+                    //calculate chart label position period
+                    double xLabelWidthPeriod = 80;
+                    double yLabelHeightPeriod = 80;
+                    double xLabelCountPeriod = viewRowCount * (xLabelWidthPeriod / ui_section_body.ActualWidth);
+                    double yLabelCountPeriod = viewRowCount * (yLabelHeightPeriod / ui_section_body.ActualHeight);
+
+                    double tempCompareValue = 0;
+
+                    tempCheckUseColumnList.Clear();
+
+                    //generate data-draw frameworks elements
+                    for (int nCol = 1; nCol < dataTable.Columns.Count; nCol++)
+                    {
+                        string tempColumnName = dataTable.Columns[nCol].ColumnName;
+                        tempCheckUseColumnList.Add(tempColumnName);
+
+                        //gen ui_simbol instance.
+                        if (!ui_simbols.ContainsKey(tempColumnName))
+                            ui_simbols.Add(tempColumnName, new TextBlock());
+
+                        if (!m_valuesMax.ContainsKey(tempColumnName))
+                            m_valuesMax.Add(tempColumnName, 0);
+
+                        if (!m_valuesMin.ContainsKey(tempColumnName))
+                            m_valuesMin.Add(tempColumnName, 0);
+
+                        USCommon.AssemblySingle(ui_section_simbols, ui_simbols[tempColumnName]);
+                        for (int nRow = 0; nRow < dataTable.Rows.Count; nRow++)
+                        {
+                            //Find Max Value
+                            tempCompareValue = dataTable.Rows[nRow].Field<double>(tempColumnName);
+                            if (nRow == 0)
+                            {
+                                m_valuesMax[tempColumnName] = tempCompareValue;
+                                m_valuesMin[tempColumnName] = tempCompareValue;
+                            }
+                            else
+                            {
+                                if (m_valuesMax[tempColumnName] < tempCompareValue)
+                                    m_valuesMax[tempColumnName] = tempCompareValue;
+                                if (m_valuesMin[tempColumnName] > tempCompareValue)
+                                    m_valuesMin[tempColumnName] = tempCompareValue;
+                            }
+                        }
+                    }
+
+                    //remove unused objects in ui_simbols
+                    tempRemoveColumnList.Clear();
+                    foreach (string key in ui_simbols.Keys)
+                    {
+                        if (!tempCheckUseColumnList.Contains(key))
+                        {
+                            tempRemoveColumnList.Add(key);
+                        }
+                    }
+                    foreach (string key in tempRemoveColumnList)
+                    {
+                        USCommon.DeAssemblySingle(ui_section_simbols, ui_simbols[key]);
+                        ui_simbols[key] = null;
+                        ui_simbols.Remove(key);
+                    }
+                }
+
                 //Update Objects Contents
                 ContentsUpdate();
                 //Update Objects Positions
@@ -60,6 +133,9 @@ namespace UnseonChartLib.USCL
 
         private StackPanel ui_section_header = new StackPanel();
         private Canvas ui_section_body = new Canvas();
+        private Canvas ui_section_xLabels = new Canvas();
+        private Canvas ui_section_yLabels = new Canvas();
+
         private StackPanel ui_section_simbols = new StackPanel();
         private TextBlock ui_title = new TextBlock();
         private Line ui_line_bottom = new Line();
@@ -80,60 +156,13 @@ namespace UnseonChartLib.USCL
             USCommon.AssemblySingle(ui_canvas, ui_section_header);
             USCommon.AssemblySingle(ui_canvas, ui_section_body);
             USCommon.AssemblySingle(ui_canvas, ui_section_simbols);
+            USCommon.AssemblySingle(ui_canvas, ui_section_xLabels);
+            USCommon.AssemblySingle(ui_canvas, ui_section_yLabels);
             USCommon.AssemblySingle(ui_canvas, ui_line_bottom);
             USCommon.AssemblySingle(ui_canvas, ui_line_right);
-
             USCommon.AssemblySingle(ui_section_header, ui_title);
 
-            //add chart graph
-            if (dataTable != null && dataTable.Columns.Count >= 2 && dataTable.Rows.Count > 0)
-            {
-                //chart zoom setup
-                int startRowNum = 0;
-                int endRowNum = dataTable.Rows.Count - 1;
-                int viewRowCount = endRowNum - startRowNum;
-
-                //calculate chart label position period
-                double xLabelWidthPeriod = 80;
-                double yLabelHeightPeriod = 80;
-                double xLabelCountPeriod = viewRowCount * (xLabelWidthPeriod / ui_section_body.ActualWidth);
-                double yLabelCountPeriod = viewRowCount * (yLabelHeightPeriod / ui_section_body.ActualHeight);
-
-                tempCheckUseColumnList.Clear();
-
-                //generate data-draw frameworks elements
-                for (int nCol = 1; nCol < dataTable.Columns.Count; nCol++)
-                {
-                    string tempColumnName = dataTable.Columns[nCol].ColumnName;
-                    tempCheckUseColumnList.Add(tempColumnName);
-                    
-                    //gen ui_simbol instance.
-                    if (!ui_simbols.ContainsKey(tempColumnName))
-                        ui_simbols.Add(tempColumnName, new TextBlock());
-
-                    USCommon.AssemblySingle(ui_section_simbols, ui_simbols[tempColumnName]);
-                    for (int nRow = 0; nRow < dataTable.Rows.Count; nRow++)
-                    {
-                        
-                    }
-                }
-
-                //remove unused objects in ui_simbols
-                tempRemoveColumnList.Clear();
-                foreach (string key in ui_simbols.Keys)
-                {
-                    if(!tempCheckUseColumnList.Contains(key))
-                    {
-                        tempRemoveColumnList.Add(key);
-                    }
-                }
-                foreach (string key in tempRemoveColumnList)
-                {
-                    USCommon.DeAssemblySingle(ui_section_simbols, ui_simbols[key]);
-                    ui_simbols[key] = null;
-                    ui_simbols.Remove(key);
-                }
-            }
+            
         }
 
         //Please Use Format : EnterLock(); access _dataTable ExitLock(); 
@@ -170,7 +199,7 @@ namespace UnseonChartLib.USCL
         }
 
         private static Thickness sectionHeaderPosition = new Thickness(15, 15, 0, 0);
-        private static Thickness sectionSimbolsPosition = new Thickness(20, 45, 0, 0);
+        private static Thickness sectionSimbolsPosition = new Thickness(15, 50, 0, 0);
         private static Thickness sectionBodyPosition = new Thickness();
         public void PositionUpdate()
         {
