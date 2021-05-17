@@ -83,8 +83,8 @@ namespace UnseonChartLib.USCL
                     int viewRowCount = endRowNum - startRowNum;
 
                     //calculate chart label position period
-                    double xLabelWidthPeriod = 80;
-                    double yLabelHeightPeriod = 80;
+                    double xLabelWidthPeriod = 40;
+                    double yLabelHeightPeriod = 40;
                     double xLabelCountPeriod = viewRowCount * (xLabelWidthPeriod / ui_section_body.ActualWidth);
                     double yLabelCountPeriod = viewRowCount * (yLabelHeightPeriod / ui_section_body.ActualHeight);
                     double tempCompareValue = 0;
@@ -116,13 +116,14 @@ namespace UnseonChartLib.USCL
 
                     //Display Y Labels
                     int num = 0;
-                    for(double nLabelHeight = 0; nLabelHeight < 1000; nLabelHeight+=yLabelHeightPeriod)
+                    double yLabelMaxHeight = ui_section_yLabels.Margin.Bottom - ui_section_yLabels.Margin.Top;
+                    for(double yLabelHeight = 0; yLabelHeight < ui_section_yLabels.ActualHeight; yLabelHeight+=yLabelHeightPeriod)
                     {
                         if (ui_yLabels.Count <= num)
                             ui_yLabels.Add(new TextBlock());
                         ui_yLabels[num].Text = "test";
                         USCommon.AssemblySingle(ui_section_yLabels, ui_yLabels[num]);
-                        ui_yLabels[num].Margin = new Thickness(0, nLabelHeight, 0, 0);
+                        ui_yLabels[num].Margin = new Thickness(0, yLabelHeight, 0, 0);
                         num++;
                     }
 
@@ -219,26 +220,32 @@ namespace UnseonChartLib.USCL
             //Update ui_section_body Position
             sectionBodyPosition.Left = 10;
             sectionBodyPosition.Top = 45;
-            sectionBodyPosition.Right = ui_canvas.ActualWidth - 100;
-            sectionBodyPosition.Bottom = ui_canvas.ActualHeight - 60;
             if (ui_section_body.Margin != sectionBodyPosition)
+            {
                 ui_section_body.Margin = sectionBodyPosition;
+                ui_section_body.Width = ui_canvas.ActualWidth - 70 - sectionBodyPosition.Left;
+                ui_section_body.Height = ui_canvas.ActualHeight - 60 - sectionBodyPosition.Bottom;
+            }
 
             //Update ui_section_xLabels Positioin
             sectionXLabelsPosition.Left = 10;
-            sectionXLabelsPosition.Right = ui_canvas.ActualWidth - 100;
             sectionXLabelsPosition.Top = ui_canvas.ActualHeight - 60;
-            sectionXLabelsPosition.Bottom = 10;
             if (ui_section_xLabels.Margin != sectionXLabelsPosition)
+            {
                 ui_section_xLabels.Margin = sectionXLabelsPosition;
+                ui_section_xLabels.Width = ui_canvas.ActualWidth - 100 - sectionXLabelsPosition.Left;
+                ui_section_xLabels.Height = ui_canvas.ActualHeight - 10 - sectionXLabelsPosition.Top;
+            }
 
             //Update ui_section_yLabels Positioin
-            sectionYLabelsPosition.Left = ui_canvas.ActualWidth - 100;
-            sectionYLabelsPosition.Right = ui_canvas.ActualWidth - 10;
+            sectionYLabelsPosition.Left = ui_canvas.ActualWidth - 70;
             sectionYLabelsPosition.Top = 45;
-            sectionYLabelsPosition.Bottom = ui_canvas.ActualHeight - 60;
             if (ui_section_yLabels.Margin != sectionYLabelsPosition)
+            {
                 ui_section_yLabels.Margin = sectionYLabelsPosition;
+                ui_section_yLabels.Width = ui_canvas.ActualWidth - 10 - sectionYLabelsPosition.Left;
+                ui_section_yLabels.Height = ui_canvas.ActualHeight - 60 - sectionYLabelsPosition.Top;
+            }
         }
 
 
