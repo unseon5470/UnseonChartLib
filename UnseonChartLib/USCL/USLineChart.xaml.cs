@@ -247,8 +247,5 @@ namespace UnseonChartLib.USCL
                 ui_section_yLabels.Height = ui_canvas.ActualHeight - 60 - sectionYLabelsPosition.Top;
             }
         }
-
-
-
     }
 }
