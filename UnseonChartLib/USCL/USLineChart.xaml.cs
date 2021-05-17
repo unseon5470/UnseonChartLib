@@ -61,7 +61,7 @@ namespace UnseonChartLib.USCL
         private Dictionary<String, List<TextBlock>> ui_yLabel_dic = new Dictionary<string, List<TextBlock>>();
         private double m_valuesMax = 0;
         private double m_valuesMin = 0;
-
+        private double m_valuesWidth = 0;
         private List<string> tempCheckUseColumnList = new List<string>();
         private List<string> tempRemoveColumnList = new List<string>();
 
@@ -113,6 +113,7 @@ namespace UnseonChartLib.USCL
                                 m_valuesMin = tempCompareValue;
                         }
                     }
+                    m_valuesWidth = m_valuesMax + 10 - m_valuesMin;
 
                     //Display Y Labels
                     int num = 0;
@@ -121,12 +122,18 @@ namespace UnseonChartLib.USCL
                     {
                         if (ui_yLabels.Count <= num)
                             ui_yLabels.Add(new TextBlock());
-                        ui_yLabels[num].Text = "test";
+                        double tempLabelValue = (m_valuesWidth * yLabelHeight) / ui_section_body.ActualHeight;
+                        ui_yLabels[num].Text = tempLabelValue.ToString("F4");
                         USCommon.AssemblySingle(ui_section_yLabels, ui_yLabels[num]);
-                        ui_yLabels[num].Margin = new Thickness(0, yLabelHeight, 0, 0);
+                        ui_yLabels[num].Margin = new Thickness(0, ui_section_yLabels.ActualHeight-yLabelHeight, 0, 0);
                         num++;
                     }
-
+                    while(ui_yLabels.Count>num)
+                    {
+                        USCommon.DeAssemblySingle(ui_section_yLabels, ui_yLabels[num - 1]);
+                        ui_yLabels[num - 1] = null;
+                        ui_yLabels.RemoveAt(num - 1);
+                    }
 
                     //remove unused objects in ui_simbols
                     tempRemoveColumnList.Clear();
@@ -195,7 +202,6 @@ namespace UnseonChartLib.USCL
             int num = 0;
             foreach(string key in ui_simbols.Keys)
             {
-                 
                 USCommon.UpdateText(ui_simbols[key],key,14,FontWeight.FromOpenTypeWeight(300), USBrushs.GetPastelSolidBrush(num));
                 num++;
             }
@@ -223,9 +229,9 @@ namespace UnseonChartLib.USCL
             if (ui_section_body.Margin != sectionBodyPosition)
             {
                 ui_section_body.Margin = sectionBodyPosition;
-                ui_section_body.Width = ui_canvas.ActualWidth - 70 - sectionBodyPosition.Left;
-                ui_section_body.Height = ui_canvas.ActualHeight - 60 - sectionBodyPosition.Bottom;
             }
+            ui_section_body.Width = Math.Abs(ui_canvas.ActualWidth - 70 - sectionBodyPosition.Left);
+            ui_section_body.Height = Math.Abs(ui_canvas.ActualHeight - 60 - sectionBodyPosition.Bottom);
 
             //Update ui_section_xLabels Positioin 
             sectionXLabelsPosition.Left = 10;
@@ -233,19 +239,20 @@ namespace UnseonChartLib.USCL
             if (ui_section_xLabels.Margin != sectionXLabelsPosition) 
             {
                 ui_section_xLabels.Margin = sectionXLabelsPosition;
-                ui_section_xLabels.Width = ui_canvas.ActualWidth - 100 - sectionXLabelsPosition.Left;
-                ui_section_xLabels.Height = ui_canvas.ActualHeight - 10 - sectionXLabelsPosition.Top;
             }
+            ui_section_xLabels.Width = Math.Abs(ui_canvas.ActualWidth - 100 - sectionXLabelsPosition.Left);
+            ui_section_xLabels.Height = Math.Abs(ui_canvas.ActualHeight - 10 - sectionXLabelsPosition.Top);
 
             //Update ui_section_yLabels Positioin
             sectionYLabelsPosition.Left = ui_canvas.ActualWidth - 70;
             sectionYLabelsPosition.Top = 45;
             if (ui_section_yLabels.Margin != sectionYLabelsPosition)
             {
-                ui_section_yLabels.Margin = sectionYLabelsPosition;
-                ui_section_yLabels.Width = ui_canvas.ActualWidth - 10 - sectionYLabelsPosition.Left;
-                ui_section_yLabels.Height = ui_canvas.ActualHeight - 60 - sectionYLabelsPosition.Top;
+                ui_section_yLabels.Margin = sectionYLabelsPosition;            
             }
+            //Width&Height value not enable put nagative value.
+            ui_section_yLabels.Width = Math.Abs(ui_canvas.ActualWidth - 10 - sectionYLabelsPosition.Left);
+            ui_section_yLabels.Height = Math.Abs(ui_canvas.ActualHeight - 60 - sectionYLabelsPosition.Top);
         }
     }
 }
