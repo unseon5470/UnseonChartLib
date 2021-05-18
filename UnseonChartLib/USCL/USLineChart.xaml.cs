@@ -91,7 +91,7 @@ namespace UnseonChartLib.USCL
                     double yLabelHeightPeriod = 40;
                     //i don't like format change. but.... div need format change to integer
                     int xLabelCountPeriod = (int)(viewRowCount * (xLabelWidthPeriod / ui_section_body.ActualWidth));
-                    int yLabelCountPeriod = (int)(viewRowCount * (yLabelHeightPeriod / ui_section_body.ActualHeight));
+
                     double tempCompareValue = 0;
 
                     tempCheckUseColumnList.Clear();
@@ -118,7 +118,7 @@ namespace UnseonChartLib.USCL
                                 m_valuesMin = tempCompareValue;
                         }
                     }
-                    m_valuesWidth = m_valuesMax + 10 - m_valuesMin;
+                    m_valuesWidth = m_valuesMax - m_valuesMin;
 
                     //Display Y Labels & Y Lines
                     int num = 0;
@@ -193,13 +193,11 @@ namespace UnseonChartLib.USCL
                             ui_xLines[num].SnapsToDevicePixels = true;
                             ui_xLines[num].SetValue(RenderOptions.EdgeModeProperty, EdgeMode.Aliased);
                         }
-
                         if(num==0)
                         {
                             ui_xLabels[num].Visibility = Visibility.Hidden;
                             ui_xLines[num].Visibility = Visibility.Hidden;
                         }
-
 
                         num++;
                         xLabelCount += xLabelCountPeriod;
@@ -215,11 +213,33 @@ namespace UnseonChartLib.USCL
                         ui_xLines.RemoveAt(num - 1);
                     }
 
+                    num = 0;
                     //Display Graph Object
+                    for (int nCol = 1; nCol < dataTable.Columns.Count; nCol++)
+                    {
+                        string tempColumnName = dataTable.Columns[nCol].ColumnName;
+
+                        if (!ui_polylines.ContainsKey(tempColumnName))
+                            ui_polylines.Add(tempColumnName, new Polyline());
+
+                        USCommon.AssemblySingle(ui_section_body,ui_polylines[tempColumnName]);
+                        ui_polylines[tempColumnName].Points.Clear();
+
+                        for (int nRow = 0; nRow < dataTable.Rows.Count; nRow++)
+                        {
+                            ui_polylines[tempColumnName].Points.Add(
+                                new Point(nRow*ui_section_body.ActualWidth/dataTable.Rows.Count,
+                                ui_section_body.ActualHeight-(dataTable.Rows[nRow].Field<double>(tempColumnName) * ui_section_body.ActualHeight/m_valuesWidth)));
+                        }
+
+                        ui_polylines[tempColumnName].Stroke = USBrushs.GetPastelSolidBrush(num);
+                        ui_polylines[tempColumnName].StrokeThickness = 2;
+                        num++;
+                    }
 
 
-                    //remove unused objects in ui_simbols
-                    tempRemoveColumnList.Clear();
+                            //remove unused objects in ui_simbols
+                            tempRemoveColumnList.Clear();
                     foreach (string key in ui_simbols.Keys)
                     {
                         if (!tempCheckUseColumnList.Contains(key))
@@ -335,7 +355,7 @@ namespace UnseonChartLib.USCL
             }
             //Width&Height value not enable put nagative value.
             ui_section_yLabels.Width = Math.Abs(ui_canvas.ActualWidth - 10 - sectionYLabelsPosition.Left);
-            ui_section_yLabels.Height = Math.Abs(ui_canvas.ActualHeight - 60 - sectionYLabelsPosition.Top);
+            ui_section_yLabels.Height = Math.Abs(ui_canvas.ActualHeight - 45 - sectionYLabelsPosition.Top);
         }
     }
 }

@@ -37,9 +37,9 @@ namespace ChartSampleApp
             System.Environment.Exit(0);
         }
 
-        private double sensorLatestValue1 = 30;
-        private double sensorLatestValue2 = 50;
-        private double sensorLatestValue3 = 70;
+        private double sensorLatestValue1 = 80;
+        private double sensorLatestValue2 = 80;
+        private double sensorLatestValue3 = 80;
         private void AddChartDataAuto()
         {
             //Chart Value Random Generation.
@@ -58,7 +58,7 @@ namespace ChartSampleApp
                 }
                 ui_usLineChart1.ExitLock();
 
-                Thread.Sleep(10);
+                Thread.Sleep(50);
             }
         }
 
