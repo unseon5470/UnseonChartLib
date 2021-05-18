@@ -26,17 +26,17 @@ it's launch target date is 2021-05-21 (Beta, Only including Simple Line Chart)<b
 
 3. Initialize chart Option & columns of dataTable<br/>
 
-    - you should control chart between EnterLock() and ExitLock() 
+- you should control chart between EnterLock() and ExitLock() 
     
 ![image](https://user-images.githubusercontent.com/35219280/118647895-d4940e80-b81c-11eb-893c-8dba13555fdd.png)
 
 4. You can data live streaming by other threads<br/>
 
-    - First. start your work thread.
+- First. start your work thread.
 
 ![image](https://user-images.githubusercontent.com/35219280/118648344-40767700-b81d-11eb-8a5f-09d8fa03fc2a.png)
 
-    - Seconds. you can add rows everyTime & any thread 
+- Second. you can add rows everyTime & any thread 
     
 ![image](https://user-images.githubusercontent.com/35219280/118648443-5d12af00-b81d-11eb-9caf-eccadb919436.png)
 
