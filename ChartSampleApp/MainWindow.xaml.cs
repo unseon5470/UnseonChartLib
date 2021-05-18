@@ -49,7 +49,7 @@ namespace ChartSampleApp
                 sensorLatestValue1 += 1 - (random.NextDouble() * 2);
                 sensorLatestValue2 += 1 - (random.NextDouble() * 2);
                 sensorLatestValue3 += 1 - (random.NextDouble() * 2);
-
+                 
                 ui_usLineChart1.EnterLock();
                 ui_usLineChart1.dataTable.Rows.Add(DateTime.Now, sensorLatestValue1, sensorLatestValue2, sensorLatestValue3);
                 if (ui_usLineChart1.dataTable.Rows.Count > 1000)
