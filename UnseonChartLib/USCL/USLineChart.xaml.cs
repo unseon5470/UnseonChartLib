@@ -56,6 +56,8 @@ namespace UnseonChartLib.USCL
         private Dictionary<String, Polyline> ui_polylines = new Dictionary<String, Polyline>();
         private List<TextBlock> ui_xLabels = new List<TextBlock>();
         private List<TextBlock> ui_yLabels = new List<TextBlock>();
+        private List<Line> ui_xLines = new List<Line>();
+        private List<Line> ui_yLines = new List<Line>();
         private Dictionary<String, TextBlock> ui_simbols = new Dictionary<String, TextBlock>();
         private Dictionary<String, List<TextBlock>> ui_xLabel_dic = new Dictionary<string, List<TextBlock>>();
         private Dictionary<String, List<TextBlock>> ui_yLabel_dic = new Dictionary<string, List<TextBlock>>();
@@ -64,6 +66,8 @@ namespace UnseonChartLib.USCL
         private double m_valuesWidth = 0;
         private List<string> tempCheckUseColumnList = new List<string>();
         private List<string> tempRemoveColumnList = new List<string>();
+
+        private DoubleCollection dashType01 = new DoubleCollection(new double[] { 0.4, 1 });
 
 
         private void Update(object sender, EventArgs e)
@@ -83,10 +87,11 @@ namespace UnseonChartLib.USCL
                     int viewRowCount = endRowNum - startRowNum;
 
                     //calculate chart label position period
-                    double xLabelWidthPeriod = 40;
+                    double xLabelWidthPeriod = 100;
                     double yLabelHeightPeriod = 40;
-                    double xLabelCountPeriod = viewRowCount * (xLabelWidthPeriod / ui_section_body.ActualWidth);
-                    double yLabelCountPeriod = viewRowCount * (yLabelHeightPeriod / ui_section_body.ActualHeight);
+                    //i don't like format change. but.... div need format change to integer
+                    int xLabelCountPeriod = (int)(viewRowCount * (xLabelWidthPeriod / ui_section_body.ActualWidth));
+                    int yLabelCountPeriod = (int)(viewRowCount * (yLabelHeightPeriod / ui_section_body.ActualHeight));
                     double tempCompareValue = 0;
 
                     tempCheckUseColumnList.Clear();
@@ -115,17 +120,37 @@ namespace UnseonChartLib.USCL
                     }
                     m_valuesWidth = m_valuesMax + 10 - m_valuesMin;
 
-                    //Display Y Labels
+                    //Display Y Labels & Y Lines
                     int num = 0;
                     double yLabelMaxHeight = ui_section_yLabels.Margin.Bottom - ui_section_yLabels.Margin.Top;
                     for(double yLabelHeight = 0; yLabelHeight < ui_section_yLabels.ActualHeight; yLabelHeight+=yLabelHeightPeriod)
                     {
                         if (ui_yLabels.Count <= num)
                             ui_yLabels.Add(new TextBlock());
+
+                        if (ui_yLines.Count <= num)
+                            ui_yLines.Add(new Line());
+
                         double tempLabelValue = (m_valuesWidth * yLabelHeight) / ui_section_body.ActualHeight;
+
                         ui_yLabels[num].Text = tempLabelValue.ToString("F4");
                         USCommon.AssemblySingle(ui_section_yLabels, ui_yLabels[num]);
-                        ui_yLabels[num].Margin = new Thickness(0, ui_section_yLabels.ActualHeight-yLabelHeight, 0, 0);
+
+                        USCommon.AssemblySingle(ui_section_body, ui_yLines[num]);
+                        ui_yLabels[num].Margin = new Thickness(0, ui_section_yLabels.ActualHeight - yLabelHeight-7, 0, 0);
+                        ui_yLines[num].X1 = 0;
+                        ui_yLines[num].X2 = ui_section_body.ActualWidth;
+                        ui_yLines[num].Y1 = ui_section_yLabels.ActualHeight - yLabelHeight;
+                        ui_yLines[num].Y2 = ui_section_yLabels.ActualHeight - yLabelHeight;
+                        ui_yLines[num].Stroke = USBrushs.GetSolidBrush(Color.FromArgb(100, 40, 40, 40));
+                        ui_yLines[num].StrokeDashArray = dashType01;
+                        ui_yLines[num].StrokeThickness = 1;
+                        if (ui_yLines[num].SnapsToDevicePixels != true)
+                        {
+                            ui_yLines[num].SnapsToDevicePixels = true;
+                            ui_yLines[num].SetValue(RenderOptions.EdgeModeProperty, EdgeMode.Aliased);
+                        }
+
                         num++;
                     }
                     while(ui_yLabels.Count>num)
@@ -133,7 +158,65 @@ namespace UnseonChartLib.USCL
                         USCommon.DeAssemblySingle(ui_section_yLabels, ui_yLabels[num - 1]);
                         ui_yLabels[num - 1] = null;
                         ui_yLabels.RemoveAt(num - 1);
+
+                        USCommon.DeAssemblySingle(ui_section_body, ui_yLines[num - 1]);
+                        ui_yLines[num - 1] = null;
+                        ui_yLines.RemoveAt(num - 1);
                     }
+
+                    //Display X Labels & X Lines
+                    num = 0;
+                    double xLabelMaxWidth = ui_section_xLabels.Margin.Right - ui_section_xLabels.Margin.Left;
+                    int xLabelCount = 0;
+                    for (double xLabelWidth = 0; xLabelWidth < ui_section_xLabels.ActualWidth; xLabelWidth += xLabelWidthPeriod)
+                    {
+                        if (ui_xLabels.Count <= num)
+                            ui_xLabels.Add(new TextBlock());
+
+                        if (ui_xLines.Count <= num)
+                            ui_xLines.Add(new Line());
+
+                        ui_xLabels[num].Text = dataTable.Rows[xLabelCount].Field<DateTime>(dataTable.Columns[0]).ToString("hh:mm:ss.fff");
+                        USCommon.AssemblySingle(ui_section_xLabels, ui_xLabels[num]);
+                        
+                        USCommon.AssemblySingle(ui_section_body, ui_xLines[num]);
+                        ui_xLabels[num].Margin = new Thickness(xLabelWidth-35, 0, 0, 0);
+                        ui_xLines[num].X1 = xLabelWidth;
+                        ui_xLines[num].X2 = xLabelWidth;
+                        ui_xLines[num].Y1 = 0;
+                        ui_xLines[num].Y2 = ui_section_body.ActualHeight;
+                        ui_xLines[num].Stroke = USBrushs.GetSolidBrush(Color.FromArgb(100, 40, 40, 40));
+                        ui_xLines[num].StrokeDashArray = dashType01;
+                        ui_xLines[num].StrokeThickness = 1;
+                        if (ui_xLines[num].SnapsToDevicePixels != true)
+                        {
+                            ui_xLines[num].SnapsToDevicePixels = true;
+                            ui_xLines[num].SetValue(RenderOptions.EdgeModeProperty, EdgeMode.Aliased);
+                        }
+
+                        if(num==0)
+                        {
+                            ui_xLabels[num].Visibility = Visibility.Hidden;
+                            ui_xLines[num].Visibility = Visibility.Hidden;
+                        }
+
+
+                        num++;
+                        xLabelCount += xLabelCountPeriod;
+                    }
+                    while (ui_xLabels.Count > num)
+                    {
+                        USCommon.DeAssemblySingle(ui_section_xLabels, ui_xLabels[num - 1]);
+                        ui_xLabels[num - 1] = null;
+                        ui_xLabels.RemoveAt(num - 1);
+
+                        USCommon.DeAssemblySingle(ui_section_body, ui_xLines[num - 1]);
+                        ui_xLines[num - 1] = null;
+                        ui_xLines.RemoveAt(num - 1);
+                    }
+
+                    //Display Graph Object
+
 
                     //remove unused objects in ui_simbols
                     tempRemoveColumnList.Clear();
@@ -230,18 +313,18 @@ namespace UnseonChartLib.USCL
             {
                 ui_section_body.Margin = sectionBodyPosition;
             }
-            ui_section_body.Width = Math.Abs(ui_canvas.ActualWidth - 70 - sectionBodyPosition.Left);
-            ui_section_body.Height = Math.Abs(ui_canvas.ActualHeight - 60 - sectionBodyPosition.Bottom);
+            ui_section_body.Width = Math.Abs(ui_canvas.ActualWidth - 80 - sectionBodyPosition.Left);
+            ui_section_body.Height = Math.Abs(ui_canvas.ActualHeight - 45 - sectionBodyPosition.Top);
 
             //Update ui_section_xLabels Positioin 
             sectionXLabelsPosition.Left = 10;
-            sectionXLabelsPosition.Top = ui_canvas.ActualHeight - 60;
+            sectionXLabelsPosition.Top = ui_canvas.ActualHeight - 35;
             if (ui_section_xLabels.Margin != sectionXLabelsPosition) 
             {
                 ui_section_xLabels.Margin = sectionXLabelsPosition;
             }
             ui_section_xLabels.Width = Math.Abs(ui_canvas.ActualWidth - 100 - sectionXLabelsPosition.Left);
-            ui_section_xLabels.Height = Math.Abs(ui_canvas.ActualHeight - 10 - sectionXLabelsPosition.Top);
+            ui_section_xLabels.Height = Math.Abs(ui_canvas.ActualHeight - 5 - sectionXLabelsPosition.Top);
 
             //Update ui_section_yLabels Positioin
             sectionYLabelsPosition.Left = ui_canvas.ActualWidth - 70;
